@@ -1,0 +1,5 @@
+librosa==0.10.2.post1
+numpy==2.3.3
+pyTelegramBotAPI==4.29.1
+torch==2.6.0
+torchaudio==2.6.0
