@@ -50,11 +50,9 @@ def send_text(message):
             set_state(chat_id, PROCESSING_REQUEST)
             start_synthesis(msg, message)
     except ApiException as e:
-        logging.critical(f"Caught an Telegram Api Exception: {e}\nMessage from @{message.from_user.username}: {msg}")
-        bot.send_message(message.chat.id, rpl.msg_exception)
+        logging.critical(f"Caught Telegram Api Exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     except Exception as e:
-        logging.critical(f"Caught an unknown exception: {e}\nMessage from @{message.from_user.username}: {msg}")
-        bot.send_message(message.chat.id, rpl.msg_exception)
+        logging.critical(f"Caught unknown exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     else:
         logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
 
