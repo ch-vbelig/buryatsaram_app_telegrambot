@@ -1,10 +1,13 @@
 import telebot
+from telebot.apihelper import ApiException
 import config
 import setup
 import text_processing as txt_process
 import synthesis
 import message_replies as rpl
+import logging
 
+logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', encoding='utf-8')
 
 bot = telebot.TeleBot(setup.TOKEN)
 
@@ -36,15 +39,25 @@ def send_text(message):
     msg = message.text.lower().strip()
     msg = txt_process.normalize(msg)
 
-    if len(msg) <= 1:
-        bot.send_message(message.chat.id, rpl.msg_too_short)
-    elif len(msg) > config.max_msg_len:
-        bot.send_message(message.chat.id, rpl.msg_too_long)
-    elif txt_process.contains_curse_words(msg):
-        bot.send_message(message.chat.id, rpl.msg_contains_abusive_words)
+    try:
+        if len(msg) <= 1:
+            bot.send_message(message.chat.id, rpl.msg_too_short)
+        elif len(msg) > config.max_msg_len:
+            bot.send_message(message.chat.id, rpl.msg_too_long)
+        elif txt_process.contains_curse_words(msg):
+            bot.send_message(message.chat.id, rpl.msg_contains_abusive_words)
+        else:
+            set_state(chat_id, PROCESSING_REQUEST)
+            start_synthesis(msg, message)
+    except ApiException as e:
+        logging.critical(f"Caught an Telegram Api Exception: {e}\nMessage from @{message.from_user.username}: {msg}")
+        bot.send_message(message.chat.id, rpl.msg_exception)
+    except Exception as e:
+        logging.critical(f"Caught an unknown exception: {e}\nMessage from @{message.from_user.username}: {msg}")
+        bot.send_message(message.chat.id, rpl.msg_exception)
     else:
-        set_state(chat_id, PROCESSING_REQUEST)
-        start_synthesis(msg, message)
+        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+
 
 
 def start_synthesis(msg, message):

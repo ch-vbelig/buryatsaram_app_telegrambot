@@ -11,9 +11,11 @@ curse_words = _open_curse_words(CURSE_WORDS_PATH)
 curse_words_pattern = '|'.join(curse_words)
 
 def contains_curse_words(text):
-    if re.search(curse_words_pattern, text, re.IGNORECASE):
-        print(re.search(curse_words_pattern, text, re.IGNORECASE))
-        return True
+    words = text.split()
+    for word in words:
+        for curse in curse_words:
+            if word.startswith(curse):
+                return True
     return False
 
 def vocab_lookup(text):

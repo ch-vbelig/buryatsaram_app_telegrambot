@@ -5,6 +5,7 @@ import torch
 import torchaudio
 import json
 import io
+import glob
 
 # Get device
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -12,9 +13,9 @@ device = torch.device('cpu')
 
 
 # Paths to states
-text2mel_state_path = './model_states/text2mel-checkpoint-36000.pth'
-melssrn_state_path = './model_states/melssrn-checkpoint-100000.pth'
-vocoder_path = './model_states/g_02586000'
+text2mel_state_path = sorted(glob.glob('model_states/text2mel-checkpoint*.pth'))[-1]
+melssrn_state_path = sorted(glob.glob('model_states/melssrn-checkpoint*.pth'))[-1]
+vocoder_path = sorted(glob.glob('model_states/g_*'))[-1]
 vocoder_config_path = './config_v1.json'
 
 
