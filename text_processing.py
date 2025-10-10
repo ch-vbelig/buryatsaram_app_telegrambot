@@ -38,6 +38,10 @@ def normalize(text):
     # substitute characters 'h' and 'y' with 'һ' and 'ү'
     text = re.sub('h', 'һ', text)
     text = re.sub('y', 'ү', text)
+    text = re.sub('цы', 'сэ', text)
+    text = re.sub('ц', 'с', text)
+    text = re.sub(r' (\w{2,4})(\W)', r'(\1)(\2)', text)
+    text = re.sub(r' (\w*)(угы)', r'(\1) (\2)', text)
 
     # remove non-alphabetic characters
     pattern = f'[^{Config.vocab_bur_only}]'
