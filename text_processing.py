@@ -42,6 +42,7 @@ def normalize(text):
     text = re.sub('ц', 'с', text)
     text = re.sub(r' (\w{2,4})(\W)', r'(\1)(\2)', text)
     text = re.sub(r' (\w*)(угы)', r'(\1) (\2)', text)
+    text = re.sub(r' (\w)$', r'(\1).', text)
 
     # remove non-alphabetic characters
     pattern = f'[^{Config.vocab_bur_only}]'
