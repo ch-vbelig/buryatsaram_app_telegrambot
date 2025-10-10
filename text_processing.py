@@ -39,9 +39,8 @@ def normalize(text):
     text = re.sub('y', 'ү', text)
     text = re.sub('цы', 'сэ', text)
     text = re.sub('ц', 'с', text)
-    text = re.sub(r' (\w{2,3})(\W)', r'(\1)(\2)', text)
-    text = re.sub(r' (\w*)(угы)', r'(\1) (\2)', text)
-    text = re.sub(r' (\w)$', r'(\1).', text)
+    text = re.sub(r' (даа|бэ|лэ|лээ|гу|гү|бшу|бшуу|абза)(б|бди|ш|т)', r'\1\2', text)
+    text = re.sub(r' (\w)$', r'\1.', text)
 
     # remove non-alphabetic characters
     pattern = f'[^{Config.vocab_bur_only}]'
@@ -49,6 +48,8 @@ def normalize(text):
 
     # remove double spaces
     text = re.sub(r'\s+\s+', ' ', text)
+    text = re.sub(r'\s([.,!?])', r'\1', text)
+    text = re.sub(r'([.,!?])\s*[.,!?]*', r'\1', text)
 
     text = text.strip()
     return text
