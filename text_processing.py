@@ -33,7 +33,6 @@ def normalize(text):
 
     text = re.sub('\n\n', '.', text)
     text = re.sub('\n', ',', text)
-    text = re.sub('([.,!?]){2:}', '(\1)', text)
 
     # substitute characters 'h' and 'y' with 'һ' and 'ү'
     text = re.sub('h', 'һ', text)
@@ -63,7 +62,7 @@ def normalize_long_text(text, chunk_size=4, verbose=False):
 
     for s in sintagmas:
         words = s.split()
-        chunks = [' '.join(words[i:i+chunk_size]) + Config.vocab_end_of_text for i in range(0, len(words), chunk_size)]
+        chunks = [' '.join(words[i:i+chunk_size]).strip() + Config.vocab_end_of_text for i in range(0, len(words), chunk_size)]
         sequences.extend(chunks)
 
     if verbose:
