@@ -39,7 +39,7 @@ def normalize(text):
     text = re.sub('y', 'ү', text)
     text = re.sub('цы', 'сэ', text)
     text = re.sub('ц', 'с', text)
-    text = re.sub(r' (даа|бэ|лэ|лээ|гу|гү|бшу|бшуу|абза)(б|бди|ш|т)', r'\1\2', text)
+    text = re.sub(r' (даа|бэ|лэ|лээ|гу|гү|бшу|бшуу|абза)(б|бди|ш|т)*(\W+)', r'\1\2\3', text)
     text = re.sub(r' (\w)$', r'\1.', text)
 
     # remove non-alphabetic characters
