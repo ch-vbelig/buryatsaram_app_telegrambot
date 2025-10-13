@@ -27,6 +27,7 @@ def set_state(chat_id, state):
 
 @bot.message_handler(commands=['start'])
 def start_command(message):
+    msg = message.text.lower()
     chat_id = message.chat.id
     set_state(chat_id, WAITING_FOR_INPUT)
     try:
