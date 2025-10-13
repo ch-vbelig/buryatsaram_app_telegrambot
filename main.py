@@ -1,5 +1,5 @@
 import telebot
-from telebot.apihelper import ApiException
+from telebot.apihelper import ApiException, ApiTelegramException
 import config
 import setup
 import text_processing as txt_process
@@ -49,8 +49,10 @@ def send_text(message):
         else:
             set_state(chat_id, PROCESSING_REQUEST)
             start_synthesis(msg, message)
-    except ApiException as e:
+    except ApiTelegramException as e:
         logging.critical(f"Caught Telegram Api Exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+    except ApiException as e:
+        logging.critical(f"Caught Api Exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     except Exception as e:
         logging.critical(f"Caught unknown exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     else:
