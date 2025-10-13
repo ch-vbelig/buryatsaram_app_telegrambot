@@ -29,8 +29,18 @@ def set_state(chat_id, state):
 def start_command(message):
     chat_id = message.chat.id
     set_state(chat_id, WAITING_FOR_INPUT)
-    bot.send_message(message.chat.id, rpl.msg_start.format(message.from_user.first_name))
-    bot.send_message(message.chat.id, rpl.msg_send_content)
+    try:
+        bot.send_message(message.chat.id, rpl.msg_start.format(message.from_user.first_name))
+        bot.send_message(message.chat.id, rpl.msg_send_content)
+    except ApiTelegramException as e:
+        logging.critical(f"Caught Telegram Api Exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+    except ApiException as e:
+        logging.critical(f"Caught Api Exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+    except Exception as e:
+        logging.critical(f"Caught unknown exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+    else:
+        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+
 
 
 @bot.message_handler(content_types=['text'], func=lambda m: get_state(m.chat.id) == WAITING_FOR_INPUT)
