@@ -55,6 +55,7 @@ def send_text(message):
     msg = txt_process.normalize(msg)
 
     if str(chat_id) in blocked_chats:
+        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}) (chat_id: {chat_id}): {msg}")
         return
 
     try:
