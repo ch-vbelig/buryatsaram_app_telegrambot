@@ -1,13 +1,13 @@
 import re
 from config import Config
 
-def _open_curse_words(path):
+def open_file(path):
     with open(path, encoding='utf-8') as fp:
         words = [w.strip() for w in fp.readlines()]
     return words
 
 CURSE_WORDS_PATH = 'ru_curse_words_stems.txt'
-curse_words = _open_curse_words(CURSE_WORDS_PATH)
+curse_words = open_file(CURSE_WORDS_PATH)
 curse_words_pattern = '|'.join(curse_words)
 
 def contains_curse_words(text):

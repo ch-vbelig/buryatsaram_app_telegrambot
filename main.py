@@ -7,6 +7,10 @@ import synthesis
 import message_replies as rpl
 import logging
 
+BLOCKED_CHATS = 'blocked_chats.txt'
+blocked_chats = txt_process.open_file(BLOCKED_CHATS)
+
+
 logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', encoding='utf-8')
 
 bot = telebot.TeleBot(setup.TOKEN)
@@ -40,7 +44,7 @@ def start_command(message):
     except Exception as e:
         logging.critical(f"Caught unknown exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     else:
-        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}) (chat_id: {chat_id}): {msg}")
 
 
 
@@ -49,6 +53,9 @@ def send_text(message):
     chat_id = message.chat.id
     msg = message.text.lower().strip()
     msg = txt_process.normalize(msg)
+
+    if str(chat_id) in blocked_chats:
+        return
 
     try:
         if len(msg) <= 1:
@@ -67,7 +74,7 @@ def send_text(message):
     except Exception as e:
         logging.critical(f"Caught unknown exception: {e}\nMessage from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
     else:
-        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}): {msg}")
+        logging.info(f"Message from @{message.from_user.username}({message.from_user.first_name} {message.from_user.last_name}) (chat_id: {chat_id}): {msg}")
 
 
 
