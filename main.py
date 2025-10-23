@@ -48,10 +48,15 @@ def start_command(message):
 
 
 
-@bot.message_handler(content_types=['text'], func=lambda m: get_state(m.chat.id) == WAITING_FOR_INPUT)
+@bot.message_handler(content_types=['text', 'photo'], func=lambda m: get_state(m.chat.id) == WAITING_FOR_INPUT)
 def send_text(message):
     chat_id = message.chat.id
-    msg = message.text.lower().strip()
+    if message.text:
+        msg = message.text.lower().strip()
+    elif message.caption:
+        msg = message.caption.lower().strip()
+    else:
+        return
     msg = txt_process.normalize(msg)
 
     if str(chat_id) in blocked_chats:
