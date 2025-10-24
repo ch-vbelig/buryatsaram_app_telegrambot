@@ -74,7 +74,7 @@ def normalize_long_text(text, chunk_size=4, verbose=False):
         ids = vocab_lookup(seq)
         id_batch.append(ids)
 
-    return id_batch
+    return id_batch, sequences
 
 
 if __name__ == '__main__':
