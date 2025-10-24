@@ -113,11 +113,9 @@ def synthesize(msg):
         w = wav[i].detach().cpu()
         w = torchaudio.functional.vad(w.flip([-1]), Config.sample_rate, trigger_level=trigger_level).flip([-1])
         if texts[i][-2] in Config.signs[5:]:
-            print(texts[i], 'adding pause')
             wav_joined = torch.cat((wav_joined, w, torch.zeros(1, Config.sample_rate // 3)), dim=1)
         else:
             wav_joined = torch.cat((wav_joined, w), dim=1)
-            print(texts[i], 'not adding pause')
 
 
     wav_joined = torch.cat((wav_joined, torch.zeros(1, Config.sample_rate)), dim=1)
