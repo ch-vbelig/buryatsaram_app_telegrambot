@@ -88,7 +88,7 @@ def start_synthesis(msg, message):
     chat_id = message.chat.id
     bot.send_message(message.chat.id, rpl.msg_reading)
     voice = synthesis.synthesize(msg)
-    bot.send_audio(message.chat.id, voice)
+    bot.send_audio(message.chat.id, voice, timeout=2000)
     # bot.delete_message(temp_msg.chat.id, temp_msg.id)
     set_state(chat_id, WAITING_FOR_INPUT)
     bot.send_message(message.chat.id, rpl.msg_send_content)
